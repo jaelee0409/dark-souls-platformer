@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 #include <string>
-#include "Core/Window.h"
-#include "Systems/Renderer.h"
+#include "Window.h"
+#include "Renderer.h"
 
 class App {
 public:

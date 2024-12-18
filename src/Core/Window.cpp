@@ -1,4 +1,4 @@
-#include "Core/Window.h"
+#include "Window.h"
 #include <SDL.h>
 #include <stdio.h>
 
@@ -14,7 +14,7 @@ bool Window::init() {
         return false;
     }
 
-    gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+    gWindow = SDL_CreateWindow("Dark Souls Platformer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
     if (gWindow == nullptr) {
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
         return false;

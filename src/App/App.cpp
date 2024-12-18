@@ -1,5 +1,6 @@
 #include "App.h"
-// #include <SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <stdio.h>
 
 App::App() : quit(false), renderer(nullptr) {}
@@ -12,12 +13,12 @@ bool App::init() {
     }
     renderer = new Renderer(window.getRenderer());
 
-    // int imgFlags = IMG_INIT_PNG;
-    // if (!(IMG_Init(imgFlags) & imgFlags)) {
-    //     printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-    //     return false;
-    // }
-    // return true;
+    int imgFlags = IMG_INIT_PNG;
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
+        printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+        return false;
+    }
+    return true;
 }
 
 bool App::loadMedia() {

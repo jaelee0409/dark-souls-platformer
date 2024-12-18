@@ -18,9 +18,9 @@ get_filename_component(CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_DIR} REALPATH
 get_filename_component(prefix "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
 
 set(exec_prefix "${prefix}")
-set(bindir "${CMAKE_SOURCE_DIR}/libs/SDL2/bin")
-set(libdir "${CMAKE_SOURCE_DIR}/libs/SDL2/lib")
-set(includedir "${CMAKE_SOURCE_DIR}/libs/SDL2/include")
+set(bindir "${prefix}/bin")
+set(includedir "${prefix}/include")
+set(libdir "${prefix}/lib")
 
 set_and_check(SDL2_PREFIX         "${prefix}")
 set_and_check(SDL2_EXEC_PREFIX    "${exec_prefix}")

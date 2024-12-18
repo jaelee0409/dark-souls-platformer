@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 Renderer::Renderer(SDL_Renderer* renderer) : gRenderer(renderer) {}
 

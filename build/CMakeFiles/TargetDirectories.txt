@@ -1,3 +1,0 @@
-/home/CKIRUser/dark-souls-platformer/build/CMakeFiles/DarkSoulsPlatformer.dir
-/home/CKIRUser/dark-souls-platformer/build/CMakeFiles/edit_cache.dir
-/home/CKIRUser/dark-souls-platformer/build/CMakeFiles/rebuild_cache.dir
