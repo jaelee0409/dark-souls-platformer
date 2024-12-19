@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <SDL2/SDL.h>
 
@@ -17,5 +16,3 @@ private:
     SDL_Window* gWindow = nullptr;
     SDL_Renderer* gRenderer = nullptr;
 };
-
-#endif

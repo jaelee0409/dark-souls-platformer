@@ -1,5 +1,4 @@
-#ifndef APP_H
-#define APP_H
+#pragma once
 
 #include <SDL.h>
 #include <string>
@@ -21,5 +20,3 @@ private:
     Renderer* renderer;
     bool quit;
 };
-
-#endif
