@@ -1,6 +1,5 @@
 #include "Window.h"
 #include <SDL.h>
-#include <stdio.h>
 
 Window::Window() : gWindow(nullptr), gRenderer(nullptr) {}
 

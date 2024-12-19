@@ -4,6 +4,9 @@
 #include <string>
 #include "Window.h"
 #include "Renderer.h"
+#include "Player.h"
+#include "GameObject.h"
+#include <vector>
 
 class App {
 public:
@@ -16,7 +19,9 @@ public:
     void run();
 
 private:
+    bool isRunning;
     Window window;
     Renderer* renderer;
-    bool quit;
+    Player* player;
+    std::vector<GameObject*> gameObjects;
 };
