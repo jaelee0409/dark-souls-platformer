@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 class Player {
     public:
@@ -12,4 +13,11 @@ class Player {
         int x, y;
         int speed;
         SDL_Texture* texture;
+
+        // Sprite sheet details
+        int frameWidth, frameHeight;
+        int currentFrame;
+        int totalFrames;
+        int animationSpeed;
+        int frameTimer;
 };
