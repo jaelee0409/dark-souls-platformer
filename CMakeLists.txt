@@ -7,14 +7,15 @@ project(DarkSoulsPlatformer)
 # Find the SDL2 package
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 # Automatically collect all .cpp files in src
 file(GLOB SOURCES
     src/main.cpp
-    src/App/*.cpp
-    src/Core/*.cpp
-    src/Systems/*.cpp
+    src/*/*.cpp
 )
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Create the executable
 add_executable(DarkSoulsPlatformer ${SOURCES})
@@ -23,11 +24,8 @@ add_executable(DarkSoulsPlatformer ${SOURCES})
 target_link_libraries(DarkSoulsPlatformer 
     SDL2::SDL2 
     SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
 )
 
 # Define SDL_MAIN_HANDLED to prevent SDL2 from defining its own main
 add_definitions(-DSDL_MAIN_HANDLED)
-
-include_directories(${PROJECT_SOURCE_DIR}/src/App)
-include_directories(${PROJECT_SOURCE_DIR}/src/Core)
-include_directories(${PROJECT_SOURCE_DIR}/src/Systems)

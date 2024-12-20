@@ -1,20 +1,15 @@
-#include "App/App.h"
 #include <stdio.h>
+#include "core/game.h"
 
 int main(int argc, char* args[]) {
-    App app;
+    Game game;
     
-    if (!app.init()) {
-        printf("Failed to initialize the app!\n");
+    if (!game.init()) {
+        printf("Game could not initialize!\n");
         return -1;
     }
-
-    if (!app.loadMedia()) {
-        printf("Failed to load app's media!\n");
-        return -1;
-    }
-
-    app.run();
+    
+    game.run();
     
     return 0;
 }
