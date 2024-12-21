@@ -3,21 +3,33 @@
 
 SDL_Event Input::event;
 
-bool Input::init() {
+bool Input::init()
+{
     // SDL_Init already initializes input
     return true;
 }
 
-void Input::processInput() {
+void Input::processInput()
+{
+#ifdef _DEBUG
+    printf("Processing input...\n");
+#endif
+
     // Handle events
-    while (SDL_PollEvent(&event) != 0) {
-        if (event.type == SDL_QUIT) {
+    while (SDL_PollEvent(&event) != 0)
+    {
+        if (event.type == SDL_QUIT)
+        {
             // Close the application
+#ifdef _DEBUG
+        printf("Application closed...\n");
+#endif
             SDL_Quit();
         }
     }
 }
 
-bool Input::keyPressed(SDL_Scancode key) {
+bool Input::keyPressed(SDL_Scancode key)
+{
     return SDL_GetKeyboardState(nullptr)[key] != 0;
 }

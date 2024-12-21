@@ -2,71 +2,156 @@
 #include <SDL_image.h>
 #include "entities/player.h"
 #include "graphics/graphics.h"
+#include "graphics/animation.h"
 #include "input/input.h"
 
-Player::Player() {
-    // Set initial position
-    x = 100;
-    y = 100;
-    speed = 0.1;
-    texture = nullptr;
+Player::Player(float _x, float _y, float _speed)
+{
+    x = _x;
+    y = _y;
+    speed = _speed;
+    velocityY = 0;
+    gravity = 0.5f;
+    jumpSpeed = -12.0f;
+    isJumping = false;
+    isRolling = false;
 
-    // Load player sprite
-    SDL_Surface* surface = IMG_Load("../assets/sprites/_Idle.png");
-    if (surface == nullptr) {
-        printf("Failed to load player sprite sheet! SDL_image Error: %s\n", IMG_GetError());
-    }
+    // Load idle animation
+    Animation idleAnimation;
+    idleAnimation.loadAnimation("../assets/sprites/_Idle.png", 120, 80, 10, 300);
+    animations["Idle"] = idleAnimation;
 
-    texture = SDL_CreateTextureFromSurface(Graphics::renderer, surface);
-    SDL_FreeSurface(surface);
+    // Load running animation
+    Animation runAnimation;
+    runAnimation.loadAnimation("../assets/sprites/_Run.png", 120, 80, 10, 200);
+    animations["Run"] = runAnimation;
 
-    // Initialize sprite sheet properties
-    frameWidth = 120; // Width of one frame in the sprite sheet
-    frameHeight = 80; // Height of one frame in the sprite sheet
-    currentFrame = 0; // Start at the first frame
-    totalFrames = 10; // Assume there are 4 frames in the sprite sheet
-    animationSpeed = 0.1; // How fast the animation frames should change
-    frameTimer = 0; // Timer to track the frame changes
+    // Start in idle state
+    currentState = PlayerState::Idle;
+    setAnimation("Idle");
+
+#ifdef _DEBUG
+    printf("Player initialized...\n");
+#endif
 }
 
-void Player::update() {
-    // Simple movement logic
-    if (Input::keyPressed(SDL_SCANCODE_UP)) {
-        printf("UP\n");
-        y -= speed;  // Move up
+void Player::update(float deltaTime)
+{
+#ifdef _DEBUG
+    printf("Updating player...\n");
+#endif
+
+    // Movement logic (frame rate independent)
+    if (Input::keyPressed(SDL_SCANCODE_UP) && !isJumping)
+    {
+#ifdef _DEBUG
+        printf("Jumping...\n");
+#endif
+        isJumping = true;      // Trigger jump
+        velocityY = jumpSpeed; // Set the jump speed
     }
-    if (Input::keyPressed(SDL_SCANCODE_DOWN)) {
-        printf("DOWN\n");
-        y += speed;  // Move down
+    if (Input::keyPressed(SDL_SCANCODE_DOWN))
+    {
+#ifdef _DEBUG
+        printf("Crouching...\n");
+#endif
+        // Implement crouch behavior (modify later)
     }
-    if (Input::keyPressed(SDL_SCANCODE_LEFT)) {
-        printf("LEFT\n");
-        x -= speed;  // Move left
+    if (Input::keyPressed(SDL_SCANCODE_LEFT))
+    {
+#ifdef _DEBUG
+        printf("Running left...\n");
+#endif
+
+        x -= speed * deltaTime;              // Move left (speed is multiplied by deltaTime)
+        currentState = PlayerState::Running; // Change state to walking
     }
-    if (Input::keyPressed(SDL_SCANCODE_RIGHT)) {
-        printf("RIGHT\n");
-        x += speed;  // Move right
+    if (Input::keyPressed(SDL_SCANCODE_RIGHT))
+    {
+#ifdef _DEBUG
+        printf("Running right...\n");
+#endif
+
+        x += speed * deltaTime;              // Move right (speed is multiplied by deltaTime)
+        currentState = PlayerState::Running; // Change state to walking
     }
 
-    // Update animation frame
-    frameTimer++;
-    if (frameTimer >= animationSpeed) {
-        frameTimer = 0;
-        currentFrame = (currentFrame + 1) % totalFrames;  // Loop through frames
+    // Handle gravity when jumping
+    if (isJumping)
+    {
+        y += velocityY * deltaTime;       // Apply velocity with deltaTime for frame-rate independent movement
+        velocityY += gravity * deltaTime; // Apply gravity with deltaTime
+
+        // Stop the jump when the player lands
+        if (y >= 100) // Example ground level; adjust as needed
+        {
+            y = 100; // Set to the ground level
+            isJumping = false;
+        }
     }
+
+    // Update animation frame based on the current state
+    currentAnimation->frameTimer++;
+    if (currentAnimation->frameTimer >= currentAnimation->animationSpeed)
+    {
+        currentAnimation->frameTimer = 0;
+        currentAnimation->currentFrame = (currentAnimation->currentFrame + 1) % currentAnimation->totalFrames; // Loop through frames
+    }
+
+    // Update player state (switch to idle when not moving)
+    if (currentState == PlayerState::Running && !Input::keyPressed(SDL_SCANCODE_LEFT) && !Input::keyPressed(SDL_SCANCODE_RIGHT))
+    {
+        currentState = PlayerState::Idle; // Switch to idle state when no movement keys are pressed
+    }
+
+#ifdef _DEBUG
+    printf("Finished updating player...\n");
+#endif
 }
 
-void Player::render() {
+void Player::render()
+{
+#ifdef _DEBUG
+    printf("Rendering Player...\n");
+#endif
+
     // Calculate the source rectangle for the current animation frame
     SDL_Rect srcRect;
-    srcRect.x = currentFrame * frameWidth;  // Select the correct frame's X position in the sprite sheet
-    srcRect.y = 0;  // Assuming all frames are in one row (Y is always 0)
-    srcRect.w = frameWidth;
-    srcRect.h = frameHeight;
+    srcRect.x = currentAnimation->currentFrame * currentAnimation->frameWidth;
+    srcRect.y = 0;
+    srcRect.w = currentAnimation->frameWidth;
+    srcRect.h = currentAnimation->frameHeight;
 
     // Define the destination rectangle for rendering the sprite
-    SDL_Rect dstRect = {x, y, frameWidth, frameHeight};
+    SDL_Rect dstRect = {static_cast<int>(x), static_cast<int>(y), currentAnimation->frameWidth, currentAnimation->frameHeight};
 
-    // Render the current frame of the player sprite
-    SDL_RenderCopy(Graphics::renderer, texture, &srcRect, &dstRect);
+    // Render the current frame of the player's animation
+    SDL_RenderCopy(Graphics::renderer, currentAnimation->texture, &srcRect, &dstRect);
+
+#ifdef _DEBUG
+    printf("Finished rendering Player...\n");
+#endif
+}
+
+void Player::setAnimation(const std::string &animationName)
+{
+#ifdef _DEBUG
+    printf("Setting player animation...\n");
+#endif
+
+    // Change the current animation if it exists
+    if (animations.find(animationName) != animations.end())
+    {
+        currentAnimation = &animations[animationName];
+    }
+    else
+    {
+#ifdef _DEBUG
+        printf("Warning: Animation '%s' not found!\n", animationName.c_str());
+#endif
+    }
+
+#ifdef _DEBUG
+    printf("Finished setting player animation...\n");
+#endif
 }

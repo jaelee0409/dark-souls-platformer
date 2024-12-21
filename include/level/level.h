@@ -2,9 +2,10 @@
 
 #include <string>
 
-class Level {
-    public:
-        void load(const std::string& filename);
-        void update();
-        void render();
+class Level
+{
+public:
+    void load(const std::string &filename);
+    void update();
+    void render();
 };
