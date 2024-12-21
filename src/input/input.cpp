@@ -11,19 +11,15 @@ bool Input::init()
 
 void Input::processInput()
 {
-#ifdef _DEBUG
-    printf("Processing input...\n");
-#endif
-
     // Handle events
     while (SDL_PollEvent(&event) != 0)
     {
         if (event.type == SDL_QUIT)
         {
             // Close the application
-#ifdef _DEBUG
-        printf("Application closed...\n");
-#endif
+            #ifdef _DEBUG
+                printf("Application closed...\n");
+            #endif
             SDL_Quit();
         }
     }

@@ -12,25 +12,27 @@ bool Game::init()
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     {
-#ifdef _DEBUG
-        printf("SDL could not initialize... SDL_Error: %s\n", SDL_GetError());
-#endif
+        #ifdef _DEBUG
+            printf("SDL could not initialize... SDL_Error: %s\n", SDL_GetError());
+        #endif
+
         return false;
     }
 
     // Initialize game subsystems
     if (!Graphics::init())
     {
-#ifdef _DEBUG
-        printf("Graphics initialization failed...\n");
-#endif
+        #ifdef _DEBUG
+            printf("Graphics initialization failed...\n");
+        #endif
+
         return false;
     }
     if (!Input::init())
     {
-#ifdef _DEBUG
-        printf("Input initialization failed...\n");
-#endif
+        #ifdef _DEBUG
+            printf("Input initialization failed...\n");
+        #endif
 
         return false;
     }
@@ -68,6 +70,12 @@ void Game::run()
 
         // Update level/physics
         // level.update();
+
+        // Handle collisions
+
+        // Set status
+
+        // Move
 
         // Render the frame
         Graphics::clear();

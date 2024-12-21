@@ -3,17 +3,20 @@
 
 int main(int argc, char *args[])
 {
-    Game game;
+    Game *game = new Game();
 
-    if (!game.init())
+    if (!game->init())
     {
-#ifdef _DEBUG
-        printf("Game could not initialize...\n");
-#endif
+        #ifdef _DEBUG
+            printf("Game could not initialize...\n");
+        #endif
+
         return -1;
     }
 
-    game.run();
+    game->run();
+
+    delete game;
 
     return 0;
 }

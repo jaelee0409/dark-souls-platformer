@@ -14,11 +14,11 @@ public:
 
     void update(float deltaTime);
     void render();
-    void handleInput();
+    void handle_input();
 
-    float getX() const { return x; }
-    float getY() const { return y; }
-    void setPosition(float newX, float newY)
+    float get_x() const { return x; }
+    float get_y() const { return y; }
+    void set_position(float newX, float newY)
     {
         x = newX;
         y = newY;
@@ -61,16 +61,16 @@ private:
     // Dimensions for each individual frame in the sprite sheet
     int frameWidth, frameHeight;
 
-    void setAnimation(const std::string &animationName);
+    void set_animation(const std::string &animationName);
 
     // Update animation frames based on the player's state
-    void updateAnimation(float deltaTime);
+    void update_animation(float deltaTime);
 
     // Load animation frames (can be called during initialization)
-    void loadTextures(SDL_Renderer *renderer);
+    void load_textures(SDL_Renderer *renderer);
 
     // Extract a frame from the sprite sheet
-    SDL_Rect getFrameRect(int frameIndex, int totalFramesInRow);
+    SDL_Rect get_frame_rect(int frameIndex, int totalFramesInRow);
 
     // Clean up resources when the player object is destroyed
     void cleanup();

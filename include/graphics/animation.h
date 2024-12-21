@@ -18,5 +18,5 @@ public:
     Animation();
     ~Animation();
 
-    bool loadAnimation(const std::string& path, int frameWidth, int frameHeight, int totalFrames, int animationSpeed);
+    bool load_animation(const std::string& filePath, int frameWidth, int frameHeight, int totalFrames, int animationSpeed);
 };
